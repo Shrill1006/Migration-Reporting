@@ -85,7 +85,7 @@ migration_check() {
 }
 
 #------ Execution of script begins here ------
-DATACENTER=`uppercase $1`
+DATACENTER=`uppercase $DATACENTER`
 if [ $DATACENTER == "QIDC" ]
 then
 	SOURCE=$QIDC_MASTER
