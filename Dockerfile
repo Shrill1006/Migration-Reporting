@@ -17,3 +17,5 @@ COPY . /app
 
 # Setting the working directory to /app
 WORKDIR /app
+
+CMD [ "/bin/bash", "openshift_pod_check.sh" ]
