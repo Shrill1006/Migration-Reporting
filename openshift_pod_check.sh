@@ -3,7 +3,7 @@
 # Login and get current namespaces
 get_namespaces() {
 	login $1 $2
-        IFS=$'\n' read -r -d '' -a proj_names < <( oc get projects -o custom-columns=NAME:.metadata.name --no-headers && printf '\0' )
+    IFS=$'\n' read -r -d '' -a proj_names < <( oc get projects -o custom-columns=NAME:.metadata.name --no-headers && printf '\0' )
 }
 
 # This function returns the number of running pods in a project
@@ -77,4 +77,5 @@ migration_check() {
 	fi
 }
 
+#------ Execution of script begins here ------
 migration_check $1 $2 $3 $4
