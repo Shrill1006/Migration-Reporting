@@ -86,7 +86,7 @@ migration_check() {
 
 #------ Execution of script begins here ------
 CENTER=`uppercase $DATACENTER`
-if [ $CENTER == "QIDC" ]
+if [ "$CENTER" == "QIDC" ]
 then
 	SOURCE=$QIDC_MASTER
 	DEST=$QIDC311_MASTER
