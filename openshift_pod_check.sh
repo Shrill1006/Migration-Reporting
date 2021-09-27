@@ -68,11 +68,15 @@ migration_check() {
 	declare -a running_pods_1=()
 	declare -a running_pods_2=()
 	# For each common namespace, retrieve the number of running pods
+	change_context $SOURCE 443
 	for name in ${common_names[@]}
 	do
-		change_context $SOURCE 443
 		running_pods_1+=($(get_num_of_running_pods $name))
-		change_context $DEST 443
+	done
+	logout
+	change_context $DEST 443
+	for name in ${common_names[@]}
+	do
 		running_pods_2+=($(get_num_of_running_pods $name))
 	done
 	logout
