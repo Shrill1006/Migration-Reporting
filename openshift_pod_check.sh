@@ -6,16 +6,10 @@ KIDC_MASTER="paas-master-west-np.tsl.telus.com"
 QIDC311_MASTER="paas-master-east2-np.tsl.telus.com"
 KIDC311_MASTER="paas-master-west2-np.tsl.telus.com"
 
-# Take in string and make it all CAPS
-uppercase() {
-  echo "$1" | tr a-z A-Z >/dev/null
-}
-
 # Login and get current namespaces
 get_namespaces() {
 	change_context $1 $2
     IFS=$'\n' read -r -d '' -a proj_names < <( oc get projects -o custom-columns=NAME:.metadata.name --no-headers && printf '\0' )
-	logout
 }
 
 # This function returns the number of running pods in a project
@@ -90,12 +84,14 @@ migration_check() {
 }
 
 #------ Execution of script begins here ------
-CENTER=`uppercase $DATACENTER`
-if [ "$CENTER" == "QIDC" ]
+CENTER=$DATACENTER
+if [[ ${CENTER^^} = "QIDC" ]]
 then
+	echo "QIDC was selected"
 	SOURCE=$QIDC_MASTER
 	DEST=$QIDC311_MASTER
 else
+	echo "KIDC was selected"
 	SOURCE=$KIDC_MASTER
 	DEST=$KIDC311_MASTER
 fi
