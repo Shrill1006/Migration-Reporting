@@ -87,11 +87,9 @@ migration_check() {
 CENTER=$DATACENTER
 if [[ ${CENTER^^} = "QIDC" ]]
 then
-	echo "QIDC was selected"
 	SOURCE=$QIDC_MASTER
 	DEST=$QIDC311_MASTER
 else
-	echo "KIDC was selected"
 	SOURCE=$KIDC_MASTER
 	DEST=$KIDC311_MASTER
 fi
