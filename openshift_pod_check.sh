@@ -9,7 +9,7 @@ KIDC311_MASTER="paas-master-west2-np.tsl.telus.com"
 # Login and get current namespaces
 get_namespaces() {
 	change_context $1 $2
-    	IFS=$'\n' read -r -d '' -a proj_names < <( oc get projects -o custom-columns=NAME:.metadata.name --no-headers && printf '\0' )
+    IFS=$'\n' read -r -d '' -a proj_names < <( oc get projects -o custom-columns=NAME:.metadata.name --no-headers && printf '\0' )
 }
 
 # This function returns the number of running pods in a project
