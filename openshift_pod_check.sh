@@ -89,9 +89,13 @@ if [[ ${CENTER^^} = "QIDC" ]]
 then
 	SOURCE=$QIDC_MASTER
 	DEST=$QIDC311_MASTER
-else
+elif [[ ${CENTER^^} = "KIDC" ]]
+then
 	SOURCE=$KIDC_MASTER
 	DEST=$KIDC311_MASTER
+else
+	echo "Invalid datacenter parameter was given!"
+	exit 1
 fi
 
 migration_check
