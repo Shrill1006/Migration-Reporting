@@ -22,9 +22,9 @@ get_num_of_running_pods() {
 migrated() {
 	if [ $1 -eq 0 ] && [ $2 -ge 1 ]
 	then
-        	echo "Migrated" $3 "--> TRUE"
+        	echo "$3,TRUE" >> out.csv
 	else
-        	echo "Migrated" $3 "--> FALSE"
+        	echo "$3,FALSE" >> out.csv
 	fi
 }
 
@@ -42,6 +42,15 @@ logout() {
 
 # This function checks if namespaces have been migrated to newer version of OpenShift
 migration_check() {
+	# Create or clear existing file to write output of the currrent script run
+	FILE=./out.csv
+	if test -f "$FILE"
+	then 
+		> out.csv
+	else
+		touch out.csv
+	fi
+
 	# Retrieve all namespaces under the older project
 	get_namespaces $SOURCE 443
 	declare -p proj_names >/dev/null
