@@ -22,9 +22,9 @@ get_num_of_running_pods() {
 migrated() {
 	if [ $1 -eq 0 ] && [ $2 -ge 1 ]
 	then
-        	echo "$3,TRUE" >> out.csv
+        	echo "$3,TRUE,$4" >> out.csv
 	else
-        	echo "$3,FALSE" >> out.csv
+        	echo "$3,FALSE,$4" >> out.csv
 	fi
 }
 
@@ -42,15 +42,6 @@ logout() {
 
 # This function checks if namespaces have been migrated to newer version of OpenShift
 migration_check() {
-	# Create or clear existing file to write output of the currrent script run
-	FILE=./out.csv
-	if test -f "$FILE"
-	then 
-		> out.csv
-	else
-		touch out.csv
-	fi
-
 	# Retrieve all namespaces under the older project
 	get_namespaces $SOURCE 443
 	declare -p proj_names >/dev/null
@@ -88,23 +79,28 @@ migration_check() {
 	# Based on the number of running pods for each namespace, determine if the project has been completelty migrated
 	for ((i=0; i< ${#common_names[@]}; i++))
 	do
-		migrated $((${running_pods_1[$i]})) $((${running_pods_2[$i]})) ${common_names[$i]}
+		migrated $((${running_pods_1[$i]})) $((${running_pods_2[$i]})) ${common_names[$i]} $1
 	done
 }
 
 #------ Execution of script begins here ------
-CENTER=$DATACENTER
-if [[ ${CENTER^^} = "QIDC" ]]
-then
-	SOURCE=$QIDC_MASTER
-	DEST=$QIDC311_MASTER
-elif [[ ${CENTER^^} = "KIDC" ]]
-then
-	SOURCE=$KIDC_MASTER
-	DEST=$KIDC311_MASTER
+# Create or clear existing file to write output of the currrent script run
+FILE=./out.csv
+if test -f "$FILE"
+then 
+	echo "NAMESPACE, MIGRATED, DATACENTER"> out.csv
 else
-	echo "Invalid datacenter parameter was given!"
-	exit 1
+	touch out.csv
 fi
 
-migration_check
+# Run for QIDC first
+SOURCE=$QIDC_MASTER
+DEST=$QIDC311_MASTER
+DATACENTER="QIDC"
+migration_check $DATACENTER
+
+# Run for KIDC
+SOURCE=$KIDC_MASTER
+DEST=$KIDC311_MASTER
+DATACENTER="KIDC"
+migration_check $DATACENTER
