@@ -88,7 +88,7 @@ migration_check() {
 FILE=./out.csv
 if test -f "$FILE"
 then 
-	echo "NAMESPACE, MIGRATED, DATACENTER"> out.csv
+	echo "NAMESPACE, MIGRATED, DATACENTER" > out.csv
 else
 	touch out.csv
 fi
