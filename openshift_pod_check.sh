@@ -88,9 +88,9 @@ migration_check() {
 FILE=./out.csv
 if test -f "$FILE"
 then 
-	echo "NAMESPACE, MIGRATED, DATACENTER" > out.csv
+	> out.csv
 else
-	touch out.csv
+	echo "NAMESPACE, MIGRATED, DATACENTER" >> out.csv
 fi
 
 # Run for QIDC first
