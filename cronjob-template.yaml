@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Template
+objects:
+- apiVersion: batch/v1beta1
+  kind: CronJob
+  metadata:
+    name: migration-status-check
+  spec:
+    concurrencyPolicy: Forbid
+    successfulJobsHistoryLimit: 1
+    failedJobsHistoryLimit: 1
+    schedule: "* * * * 5"
+    jobTemplate:
+      spec: 
+        template: 
+          metadata:
+            labels:
+              parent: "migration-status-check"
+          spec:
+            containers:
+            - name: migration-status-check
+              image: ${DOCKER_REPO}/em-toolbox/migration-status-check:latest
+              command: ["/bin/bash", "execution.sh"]
+              env:
+              - name: REGION
+                value: ${REGION}
+              - name: DOCKER_REPO
+                value: ${DOCKER_REPO}
+            restartPolicy: OnFailure
+parameters:
+- name: REGION
+  displayName: REGION
+  required: true
+  value: east2
+- name: DOCKER_REPO
+  displayName: Image Repository Url
+  required: true
+  value: docker-registry.default.svc:5000
