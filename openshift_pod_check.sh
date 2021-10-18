@@ -32,7 +32,7 @@ change_context() {
 	CLUSTER=$1
 	PORT=$2
 	CONTEXT=`echo $CLUSTER | sed 's/\./-/g'`
-	oc config use-context openshift/${CONTEXT}:${PORT}/system:serviceaccount:openshift:project-admin >/dev/null
+	oc config use-context openshift/${CONTEXT}:${PORT}/system:serviceaccount:openshift:project-view >/dev/null
 }
 
 # Logout of current project
