@@ -1,10 +1,16 @@
 #!/bin/bash
 
-# Datacenter constants
-QIDC_MASTER="paas-master-east-np.tsl.telus.com"
-KIDC_MASTER="paas-master-west-np.tsl.telus.com"
-QIDC311_MASTER="paas-master-east2-np.tsl.telus.com"
-KIDC311_MASTER="paas-master-west2-np.tsl.telus.com"
+# Datacenter constants for non-production (uncomment lines 4-7 and 102-112 to run for non-production)
+# QIDC_MASTER="paas-master-east-np.tsl.telus.com"
+# KIDC_MASTER="paas-master-west-np.tsl.telus.com"
+# QIDC311_MASTER="paas-master-east2-np.tsl.telus.com"
+# KIDC311_MASTER="paas-master-west2-np.tsl.telus.com"
+
+# Datacenter constants for production
+QIDC_MASTER_PR="paas-master-east.tsl.telus.com"
+KIDC_MASTER_PR="paas-master-west.tsl.telus.com"
+QIDC311_MASTER_PR="paas-master-east2.tsl.telus.com"
+KIDC311_MASTER_PR="paas-master-west2.tsl.telus.com"
 
 # Login and get current namespaces
 get_namespaces() {
@@ -93,14 +99,26 @@ else
 	echo "NAMESPACE, MIGRATED, DATACENTER" >> out.csv
 fi
 
+# # Run for QIDC first
+# SOURCE=$QIDC_MASTER
+# DEST=$QIDC311_MASTER
+# DATACENTER="QIDC"
+# migration_check $DATACENTER
+
+# # Run for KIDC
+# SOURCE=$KIDC_MASTER
+# DEST=$KIDC311_MASTER
+# DATACENTER="KIDC"
+# migration_check $DATACENTER
+
 # Run for QIDC first
-SOURCE=$QIDC_MASTER
-DEST=$QIDC311_MASTER
+SOURCE=$QIDC_MASTER_PR
+DEST=$QIDC311_MASTER_PR
 DATACENTER="QIDC"
 migration_check $DATACENTER
 
 # Run for KIDC
-SOURCE=$KIDC_MASTER
-DEST=$KIDC311_MASTER
+SOURCE=$KIDC_MASTER_PR
+DEST=$KIDC311_MASTER_PR
 DATACENTER="KIDC"
 migration_check $DATACENTER
