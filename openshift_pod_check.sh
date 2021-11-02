@@ -97,7 +97,7 @@ migration_check() {
 	for ((i=0; i< ${#common_names[@]}; i++))
 	do
 		admins_arr=( $(get_admins ${common_names[$i]}) )
-		admins_str=$(join_arr , ${admins_arr[@]})
+		admins_str=$(join_arr ';' ${admins_arr[@]})
 		migrated $((${running_pods_1[$i]})) $((${running_pods_2[$i]})) ${common_names[$i]} $1 ${admins_str}
 	done
 	logout
